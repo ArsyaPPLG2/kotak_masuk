@@ -136,5 +136,47 @@
       </div>
     </div>
   </section>
+      <div class="inbox-container">
+      <a href="inbox.php">Buka Kotak Masuk</a>
+      <h1>Kotak Masuk</h1>
+      <div class="message-list" id="message-list">
+        <!-- Daftar pesan akan ditampilkan di sini -->
+      </div>
+      <div class="compose-message">
+        <input type="text" id="message" placeholder="Ketik pesan..." />
+        <button onclick="sendMessage()">Kirim</button>
+      </div>
+    </div>
+    <script>
+      document
+        .getElementById("message-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Mencegah pengiriman formulir standar
+          var message = document.getElementById("message").value;
+
+          if (message.trim() !== "") {
+            // Kirim pesan ke server PHP
+            fetch("inbox.php", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+              body: "message=" + encodeURIComponent(message),
+            })
+              .then(function (response) {
+                if (response.status === 200) {
+                  // Pesan terkirim dengan sukses, Anda dapat menambahkan logika lain di sini
+                  console.log("Pesan terkirim!");
+                  loadMessages();
+                } else {
+                  console.error("Gagal mengirim pesan");
+                }
+              })
+              .catch(function (error) {
+                console.error("Terjadi kesalahan:", error);
+              });
+          }
+        });
+    </script>
   </body>
 </html>
